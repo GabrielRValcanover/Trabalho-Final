@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+        @if(UsuarioId){
+        <h1 class="text-center">Editar Usuario</h1>
+        }@else {
+        <h1 class="text-center">Cadastrar Usuarios</h1>
+        }
+        <h1 class="text-center">Cadastrar Usuarios</h1>
+        <form [formGroup]="formUsuario" (ngSubmit)="addUsuarios()" class="mb-5">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome do Usuario:</label>
+                @if(formUsuario.get('nome')?.pristine){
+                <div class="form-text">* Campo obrigatório.</div>
+                }
+                @if(formUsuario.get('nome')?.invalid &&
+                formUsuario.get('nome')?.touched){
+                <div class="form-text text-danger">Nome é obrigatório.</div>
+                }
+                <input type="text" class="form-control" id="nome" formControlName="nome" 
+                [ngClass]="{
+                    'is-invalid': formUsuario.get('nome')?.invalid &&
+                    formUsuario.get('nome')?.touched,
+                    'is-valid': formUsuario.get('nome')?.valid &&
+                    formUsuario.get('nome')?.touched
+                    }" required />
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label" >email:</label>
+                <input type="text" class="form-control" id="email" formControlName="email" 
+                [ngClass]="{
+                    'is-invalid': formUsuario.get('email')?.invalid &&
+                    formUsuario.get('email')?.touched,
+                    'is-valid': formUsuario.get('email')?.valid &&
+                    formUsuario.get('email')?.touched
+                    }" required maxlength="14" />
+                @if(formUsuario.get('email')?.pristine){
+                <div class="form-text">* Campo obrigatório.</div>
+                <div class="form-text">email deve conter apenas digitos.</div>
+                }@else if(formUsuario.get('email')?.errors?.['minlength'] ||
+                formUsuario.get('email')?.errors?.['maxlength']){
+                <div class="form-text text-danger">email deve conter 14 dígitos.</div>
+                }
+            </div>
+           
+            <button type="submit" class="btn btn-primary" [disabled]="formUsuario.invalid">Cadastrar</button>
+            <button type="reset" class="ms-2 btn btn-danger">Limpar</button>
+        </form>
+    </div>
+</div>
