@@ -3,10 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Usuarios } from '../../../models/usuarios.model';
 import { UsuariosService } from '../../../services/usuarios.service';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro-usuarios',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './cadastro-usuarios.component.html',
   styleUrl: './cadastro-usuarios.component.css'
 })
@@ -24,7 +25,7 @@ export class CadastroUsuariosComponent {
     email: new FormControl(''),
   });
 
-  addUsaurios() {
+  addUsuarios() {
     if (this.formUsuario.valid) {
       if (this.usuarioID) {
       } else {
