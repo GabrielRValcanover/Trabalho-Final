@@ -1,1 +1,31 @@
-<p>listar-usuarios works!</p>
+<div class="container">
+    @if(usuarios.length > 0){
+    <div class="row">
+        <h1 class="text-center">Usuarios Cadastrados</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nome</th>
+                    <th scope="col" class="text-center">email</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @for(usuarios of usuarios; track usuarios.id){
+                <tr>
+                    <th scope="row" class="text-center">{{ usuarios.id}}</th>
+                    <td>{{ usuarios.nome }}</td>
+                    <td>{{ usuarios.email }}</td>
+                  
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }@else {
+    <div class="row">
+        <h1 class="text-center">Nenhum usuario Cadastrado</h1>
+    </div>
+    }
+</div>
