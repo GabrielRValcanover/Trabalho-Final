@@ -1,0 +1,38 @@
+<div class="container">
+    @if(atividades.length > 0){
+    <div class="row">
+        <h1 class="text-center">Atividades Cadastradas</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nome</th>
+                    <th scope="col" class="text-center">Descrição</th>
+                    <th scope="col" class="text-center">Data Inicial</th>
+                    <th scope="col" class="text-center">Data final</th>
+                    <th scope="col" class="text-center">Categoria</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @for(atividade of atividades; track atividade.id){
+                <tr>
+                    <th scope="row" class="text-center">{{ atividade.id}}</th>
+                    <td>{{ atividade.nome }}</td>
+                    <td>{{ atividade.descricao }}</td>
+                    <td>{{ atividade.dataInicio }}</td>
+                    <td>{{ atividade.dataFim }}</td>
+                    <td>{{ atividade.categoria }}</td>
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }@else {
+    <div class="row">
+        <h1 class="text-center">Nenhuma atividade Cadastrada</h1>
+    </div>
+    }
+</div>
