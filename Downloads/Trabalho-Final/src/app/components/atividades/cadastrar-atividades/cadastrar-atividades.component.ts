@@ -4,6 +4,7 @@ import { Atividades, Categoria } from '../../../models/atividades.model';
 import { AtividadesService } from '../../../services/atividades.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-atividades',

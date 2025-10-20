@@ -19,14 +19,25 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" formControlName="email" pattern=".+@.+\..+" required 
-                    [ngClass]="{
+                <input type="email" class="form-control" id="email" formControlName="email" [ngClass]="{
             'is-invalid': formUsuario.get('email')?.invalid && formUsuario.get('email')?.touched,
             'is-valid': formUsuario.get('email')?.valid && formUsuario.get('email')?.touched
-          }" required />
+          }" required email />
                 <div class="text-danger" *ngIf="formUsuario.get('email')?.invalid && formUsuario.get('email')?.touched">
 
                 </div>
+            </div>
+            <div class="mb-3">
+                <label for="atividadeID" class="form-label">Atividade:</label>
+                <select class="form-select" formControlName="atividadeID" id="atividadeID" aria-label="Atividade"
+                    required>
+                    @for(atividades of atividade; track atividades.id){
+                    <option [value]="atividades.id">
+                        {{ atividades.nome }} - {{ atividades.descricao }} - {{ atividades.dataInicio }} - {{ atividades.dataFim }} - {{ atividades.categoria }}
+                    </option>
+                    }
+                </select>
+                <div class="form-text">Selecione a atividade.</div>
             </div>
 
 

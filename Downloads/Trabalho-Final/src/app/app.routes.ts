@@ -9,7 +9,9 @@ export const routes: Routes = [
     { path: 'usuarios/cadastro-usuarios', component: CadastroUsuariosComponent },
     { path: 'usuarios/listar-usuarios', component: ListarUsuariosComponent },
     { path: 'atividades/cadastro-atividades', component: CadastrarAtividadesComponent },
-      { path: 'atividades/listar-atividades', component: ListarAtividadesComponent },
+    { path: 'atividades/listar-atividades', component: ListarAtividadesComponent },
+    { path: 'usuarios/editar-usuarios/:id', component: CadastroUsuariosComponent},
+
 
 
 

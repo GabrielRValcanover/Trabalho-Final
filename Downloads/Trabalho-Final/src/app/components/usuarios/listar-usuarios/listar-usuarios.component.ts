@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuarios } from '../../../models/usuarios.model';
 import { UsuariosService } from '../../../services/usuarios.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-listar-usuarios',
@@ -11,7 +13,7 @@ import { UsuariosService } from '../../../services/usuarios.service';
 export class ListarUsuariosComponent implements OnInit {
   usuarios: Usuarios[] = []
 
-  constructor(private usuarioService: UsuariosService) { }
+  constructor(private usuarioService: UsuariosService, private router: Router) { }
 
   ngOnInit() {
     this.getAllUsuarios();
@@ -21,5 +23,26 @@ export class ListarUsuariosComponent implements OnInit {
       this.usuarios = usuarios;
     });
   }
+  editUsuarios(id: number) {
+    this.router.navigate(['/usuarios/editar-usuarios', id]);
+  }
+  deleteUsuarios(id: number) {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Esta ação não pode ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.usuarioService.deleteUsuarios(id).then(() => {
+          this.getAllUsuarios();
+        });
+        Swal.fire('Excluído!', 'O Usuarios foi excluído com sucesso.', 'success');
+      }
+    });
+  }
+
 
 }
