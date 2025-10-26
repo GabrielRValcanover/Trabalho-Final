@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Atividades } from '../../../models/atividades.model';
 import { AtividadesService } from '../../../services/atividades.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-listar-atividades',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './listar-atividades.component.html',
   styleUrl: './listar-atividades.component.css'
 })

@@ -79,11 +79,7 @@ export class CadastroUsuariosComponent implements OnInit {
   }
 
 
-  loadAtividades() {
-    this.atividadeService.getAllFornecedores().then(a => {
-      this.fornecedores = fornecedores;
-    });
-  }
+
 }
 
 

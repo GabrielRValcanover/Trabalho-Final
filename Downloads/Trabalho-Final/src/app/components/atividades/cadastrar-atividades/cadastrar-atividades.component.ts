@@ -34,8 +34,8 @@ export class CadastrarAtividadesComponent {
            const novaAtividade: Atividades = {
           nome: this.formAtividades.value.nome!,
           descricao: this.formAtividades.value.descricao!,
-          dataInicio: new Date(this.formAtividades.value.dataInicio!),
-          dataFim: new Date(this.formAtividades.value.dataFim!), 
+          dataInicio: new Date (this.formAtividades.value.dataInicio!),
+          dataFim: new Date (this.formAtividades.value.dataFim!), 
           categoria: this.formAtividades.value.categoria as Categoria
           };
 

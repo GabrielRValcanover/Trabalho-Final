@@ -27,19 +27,7 @@
 
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="atividadeID" class="form-label">Atividade:</label>
-                <select class="form-select" formControlName="atividadeID" id="atividadeID" aria-label="Atividade"
-                    required>
-                    @for(atividades of atividade; track atividades.id){
-                    <option [value]="atividades.id">
-                        {{ atividades.nome }} - {{ atividades.descricao }} - {{ atividades.dataInicio }} - {{ atividades.dataFim }} - {{ atividades.categoria }}
-                    </option>
-                    }
-                </select>
-                <div class="form-text">Selecione a atividade.</div>
-            </div>
-
+       
 
             <button type="submit" class="btn btn-primary" [disabled]="formUsuario.invalid">Cadastrar</button>
             <button type="reset" class="ms-2 btn btn-danger" (click)="formUsuario.reset()">Limpar</button>
