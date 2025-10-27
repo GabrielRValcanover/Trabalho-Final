@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Atividades, Categoria } from '../../../models/atividades.model';
 import { AtividadesService } from '../../../services/atividades.service';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
   templateUrl: './cadastrar-atividades.component.html',
   styleUrl: './cadastrar-atividades.component.css'
 })
-export class CadastrarAtividadesComponent {
+export class CadastrarAtividadesComponent implements OnInit {
   atividadesID!: number;
   atividades: Atividades[] = [];
   categorias = Object.values(Categoria);
@@ -54,7 +54,22 @@ export class CadastrarAtividadesComponent {
         }
       }
     }
-
+  async ngOnInit() {
+    this.atividadesID = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.atividadesID) {
+      const atividades = await
+        this.atividadesService.getAtividadesById(this.atividadesID);
+      if (atividades) {
+        this.formAtividades = new FormGroup({
+          nome: new FormControl(atividades.nome),
+          descricao: new FormControl(atividades.descricao),
+           dataInicio: new FormControl(atividades.dataInicio),
+            dataFim: new FormControl(atividades.dataFim),
+             categoria: new FormControl(atividades.categoria),
+        });
+      };
+    }
+  }
 
      editAtividades() {
         const atividadeEditada: Atividades = {

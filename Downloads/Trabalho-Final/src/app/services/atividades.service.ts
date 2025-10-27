@@ -15,7 +15,7 @@ export class AtividadesService {
      return this.dbService.atividades.toArray();
      }
 
-      getAtividaesById(id: number) {
+      getAtividadesById(id: number) {
          return this.dbService.atividades.get(id);
        }
        updateAtividade(atividades: Atividades) {
