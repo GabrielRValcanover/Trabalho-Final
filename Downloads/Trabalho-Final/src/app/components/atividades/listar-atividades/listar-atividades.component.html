@@ -39,37 +39,40 @@
     }
 </div> -->
 <div class="container">
-  @if (atividades.length > 0) {
+    @if (atividades.length > 0) {
     <div class="row">
-      <h1 class="text-center">Atividades Cadastradas</h1>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col" class="text-center">#</th>
-            <th scope="col" class="text-center">Nome</th>
-            <th scope="col" class="text-center">Descrição</th>
-            <th scope="col" class="text-center">Data Inicial</th>
-            <th scope="col" class="text-center">Data Final</th>
-            <th scope="col" class="text-center">Categoria</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (atividade of atividades; track atividade.id) {
-            <tr>
-              <th scope="row" class="text-center">{{ atividade.id }}</th>
-              <td class="text-center">{{ atividade.nome }}</td>
-              <td class="text-center">{{ atividade.descricao }}</td>
-              <td class="text-center">{{ atividade.dataInicio | date: 'dd/MM/yyyy':'UTC' }}</td>
-              <td class="text-center">{{ atividade.dataFim | date: 'dd/MM/yyyy':'UTC' }}</td>
-              <td class="text-center">{{ atividade.categoria }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+        <h1 class="text-center">Atividades Cadastradas</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nome</th>
+                    <th scope="col" class="text-center">Descrição</th>
+                    <th scope="col" class="text-center">Data Inicial</th>
+                    <th scope="col" class="text-center">Data Final</th>
+                    <th scope="col" class="text-center">Categoria</th>
+                    <th scope="col" class="text-center">Opção</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (atividade of atividades; track atividade.id) {
+                <tr>
+                    <th scope="row" class="text-center">{{ atividade.id }}</th>
+                    <td class="text-center">{{ atividade.nome }}</td>
+                    <td class="text-center">{{ atividade.descricao }}</td>
+                    <td class="text-center">{{ atividade.dataInicio | date: 'dd/MM/yyyy':'UTC' }}</td>
+                    <td class="text-center">{{ atividade.dataFim | date: 'dd/MM/yyyy':'UTC' }}</td>
+                    <td class="text-center">{{ atividade.categoria }}</td>
+                     <i class="bi bi-pen edit-icon" (click)="editAtividades(atividade.id!)"></i>
+                    <i class="bi bi-trash mx-2" (click)="deleteAtividade(atividade.id!)"></i>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
-  } @else {
+    } @else {
     <div class="row">
-      <h1 class="text-center">Nenhuma atividade cadastrada</h1>
+        <h1 class="text-center">Nenhuma atividade cadastrada</h1>
     </div>
-  }
+    }
 </div>

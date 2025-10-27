@@ -14,4 +14,14 @@ export class AtividadesService {
      getAllAtividades(): Promise<Atividades[]> {
      return this.dbService.atividades.toArray();
      }
+
+      getAtividaesById(id: number) {
+         return this.dbService.atividades.get(id);
+       }
+       updateAtividade(atividades: Atividades) {
+         return this.dbService.atividades.put(atividades);
+       }
+       deleteAtividade(id: number) {
+         return this.dbService.atividades.delete(id);
+       }
 }

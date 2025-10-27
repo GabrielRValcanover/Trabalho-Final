@@ -15,6 +15,4 @@ export enum Categoria {
     trabalho = "Trabalho",
     lazer = "Lazer",
     pesquisa = "Pesquisa",
-
-
 }

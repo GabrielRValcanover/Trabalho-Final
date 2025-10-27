@@ -4,7 +4,7 @@ import { Atividades, Categoria } from '../../../models/atividades.model';
 import { AtividadesService } from '../../../services/atividades.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-atividades',
@@ -24,12 +24,13 @@ export class CadastrarAtividadesComponent {
     dataFim: new FormControl(''),
     categoria: new FormControl(''),
   });
-  constructor(private atividadesService: AtividadesService) { }
+  constructor(private atividadesService: AtividadesService, private router: Router, private route: ActivatedRoute) { }
  
 
   addAtividades() {
       if (this.formAtividades.valid) {
         if (this.atividadesID) {
+          this.editAtividades();
         } else {
            const novaAtividade: Atividades = {
           nome: this.formAtividades.value.nome!,
@@ -53,5 +54,24 @@ export class CadastrarAtividadesComponent {
         }
       }
     }
+
+
+     editAtividades() {
+        const atividadeEditada: Atividades = {
+          id: this.atividadesID,
+          nome: this.formAtividades.value.nome!,
+          descricao: this.formAtividades.value.descricao!,
+          dataInicio: new Date (this.formAtividades.value.dataInicio!),
+          dataFim:  new Date (this.formAtividades.value.dataFim!),
+          categoria: this.formAtividades.value.categoria! as Categoria
+        };
+        this.atividadesService.updateAtividade(atividadeEditada).then(() => {
+          Swal.fire('Atualizado!', 'A Atividade foi atualizada com sucesso.',
+            'success');
+          this.router.navigate(['atividades/listar-atividades']);
+        });
+      }
+    
+    
 
 }
