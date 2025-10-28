@@ -18,75 +18,80 @@ export class CadastrarAtividadesComponent implements OnInit {
   categorias = Object.values(Categoria);
 
   formAtividades = new FormGroup({
-    nome: new FormControl(''),
-    descricao: new FormControl(''),
-    dataInicio: new FormControl(''),
-    dataFim: new FormControl(''),
-    categoria: new FormControl(''),
+    nome: new FormControl<string | null>(null),
+    descricao: new FormControl<string | null>(null),
+    dataInicio: new FormControl<string | null>(null),
+    dataFim: new FormControl<string | null>(null),
+    categoria: new FormControl<Categoria | null>(null),
   });
+
+
   constructor(private atividadesService: AtividadesService, private router: Router, private route: ActivatedRoute) { }
- 
+
 
   addAtividades() {
-      if (this.formAtividades.valid) {
-        if (this.atividadesID) {
-          this.editAtividades();
-        } else {
-           const novaAtividade: Atividades = {
+    if (this.formAtividades.valid) {
+      if (this.atividadesID) {
+        this.editAtividades();
+      } else {
+        const novaAtividade: Atividades = {
           nome: this.formAtividades.value.nome!,
           descricao: this.formAtividades.value.descricao!,
-          dataInicio: new Date (this.formAtividades.value.dataInicio!),
-          dataFim: new Date (this.formAtividades.value.dataFim!), 
+          dataInicio: new Date(this.formAtividades.value.dataInicio!),
+          dataFim: new Date(this.formAtividades.value.dataFim!),
           categoria: this.formAtividades.value.categoria as Categoria
-          };
+        };
 
-          this.atividadesService.addAtividades(novaAtividade).then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Cadastro realizado!',
-              text: 'O Usuario foi cadastrado com sucesso.',
-              timer: 5000,
-              showConfirmButton: true,
-              draggable: true
-            });
-            this.formAtividades.reset();
+        this.atividadesService.addAtividades(novaAtividade).then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Cadastro realizado!',
+            text: 'O Usuario foi cadastrado com sucesso.',
+            timer: 5000,
+            showConfirmButton: true,
+            draggable: true
           });
-        }
+          this.formAtividades.reset();
+        });
       }
     }
+  }
+ 
   async ngOnInit() {
     this.atividadesID = Number(this.route.snapshot.paramMap.get('id'));
+
     if (this.atividadesID) {
-      const atividades = await
-        this.atividadesService.getAtividadesById(this.atividadesID);
+      const atividades = await this.atividadesService.getAtividadesById(this.atividadesID);
+
       if (atividades) {
         this.formAtividades = new FormGroup({
           nome: new FormControl(atividades.nome),
           descricao: new FormControl(atividades.descricao),
-           dataInicio: new FormControl(atividades.dataInicio),
-            dataFim: new FormControl(atividades.dataFim),
-             categoria: new FormControl(atividades.categoria),
+          dataInicio: new FormControl<string | null>(atividades.dataInicio ? new Date(atividades.dataInicio).toISOString().substring(0, 10) : null),
+          dataFim: new FormControl<string | null>(atividades.dataFim ? new Date(atividades.dataFim).toISOString().substring(0, 10): null),
+          categoria: new FormControl<Categoria | null>(atividades.categoria ?? null),
         });
-      };
+      }
     }
   }
 
-     editAtividades() {
-        const atividadeEditada: Atividades = {
-          id: this.atividadesID,
-          nome: this.formAtividades.value.nome!,
-          descricao: this.formAtividades.value.descricao!,
-          dataInicio: new Date (this.formAtividades.value.dataInicio!),
-          dataFim:  new Date (this.formAtividades.value.dataFim!),
-          categoria: this.formAtividades.value.categoria! as Categoria
-        };
-        this.atividadesService.updateAtividade(atividadeEditada).then(() => {
-          Swal.fire('Atualizado!', 'A Atividade foi atualizada com sucesso.',
-            'success');
-          this.router.navigate(['atividades/listar-atividades']);
-        });
-      }
-    
-    
+
+  editAtividades() {
+    const atividadeEditada: Atividades = {
+      id: this.atividadesID,
+      nome: this.formAtividades.value.nome!,
+      descricao: this.formAtividades.value.descricao!,
+      dataInicio: new Date(this.formAtividades.value.dataInicio!),
+      dataFim: new Date(this.formAtividades.value.dataFim!),
+      categoria: this.formAtividades.value.categoria! as Categoria
+    };
+    this.atividadesService.updateAtividade(atividadeEditada).then(() => {
+      Swal.fire('Atualizado!', 'A Atividade foi atualizada com sucesso.',
+        'success');
+      this.router.navigate(['atividades/listar-atividades']);
+    });
+  }
+
+
 
 }
