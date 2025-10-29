@@ -1,0 +1,34 @@
+<div class="container">
+    <!-- Lista de usuários -->
+    <div class="row col-md-8 offset-md-2" *ngIf="usuarios.length > 0; else semUsuarios">
+        <h1 class="text-center">Usuários Cadastrados</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nome</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Opções</th>
+                    <th scope="col" class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let usuario of usuarios; trackBy: trackById">
+                    <th scope="row" class="text-center">{{ usuario.id }}</th>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td class="text-center">
+
+                        <i class="bi bi-arrows-collapse" (click)="associarAtividades(usuario.id)"></i>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #semUsuarios>
+        <div class="row">
+            <h1 class="text-center">Nenhum Usuário Cadastrado</h1>
+        </div>
+    </ng-template>
+</div>

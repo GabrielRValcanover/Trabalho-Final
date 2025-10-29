@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<!-- <div class="container mt-4">
   <div class="row">
     <h1 class="text-center">Associe as Atividades ao Usuário</h1>
 
@@ -39,5 +39,55 @@
     } @else {
       <h2 class="text-center">Nenhuma atividade cadastrada!</h2>
     }
+  </div>
+</div> -->
+<div class="container mt-4">
+  <div class="row">
+    <h1 class="text-center">Associe as Atividades ao Usuário</h1>
+
+    <!-- Verifica se há atividades -->
+    <ng-container *ngIf="atividadesDisponiveis.length > 0 || atividadesAssociadas.length > 0; else semAtividades">
+      
+      <div class="col">
+        <h2 class="text-center">Atividades Disponíveis</h2>
+        <div
+          cdkDropList
+          id="atividadesDisponiveis"
+          (cdkDropListDropped)="dropped($event, false)"
+          [cdkDropListData]="atividadesDisponiveis"
+          class="lista"
+          [cdkDropListConnectedTo]="['atividadesAssociadas']"
+        >
+          <div *ngFor="let atividade of atividadesDisponiveis" cdkDrag class="item">
+            <strong>{{ atividade.nome }}</strong><br />
+            <small>{{ atividade.categoria }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h2 class="text-center">Atividades Associadas</h2>
+        <div
+          cdkDropList
+          id="atividadesAssociadas"
+          [cdkDropListData]="atividadesAssociadas"
+          (cdkDropListDropped)="dropped($event, true)"
+          class="lista"
+          [cdkDropListConnectedTo]="['atividadesDisponiveis']"
+        >
+          <div *ngFor="let atividade of atividadesAssociadas" cdkDrag class="item">
+            <strong>{{ atividade.nome }}</strong><br />
+            <small>{{ atividade.categoria }}</small>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- Template quando não há atividades -->
+    <ng-template #semAtividades>
+      <h2 class="text-center">Nenhuma atividade cadastrada!</h2>
+    </ng-template>
+
   </div>
 </div>

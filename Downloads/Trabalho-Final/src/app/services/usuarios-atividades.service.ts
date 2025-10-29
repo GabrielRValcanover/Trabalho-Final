@@ -12,7 +12,7 @@ export class UsuariosAtividadesService {
     return this.dbService.usuariosAtividades.toArray();
   }
   async getAssociacoesByUsuarioId(UsuarioID: number): Promise<UsuariosAtividades[]> {
-    return await this.dbService.usuariosAtividades.where('UsuarioID').equals(UsuarioID).toArray();
+    return await this.dbService.usuariosAtividades.where('usuarioID').equals(UsuarioID).toArray();
   }
   async getAssociacoesById(usuarioID: number, atividadesID: number): Promise<UsuariosAtividades[]> {
     return await this.dbService.usuariosAtividades.where({

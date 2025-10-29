@@ -113,6 +113,7 @@ export class UsuariosAtividadesComponent implements OnInit {
       console.error('Erro ao carregar as atividades associadas:', error);
     }
   }
+  
   dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
