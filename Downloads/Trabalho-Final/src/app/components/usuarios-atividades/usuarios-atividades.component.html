@@ -43,11 +43,11 @@
 </div> -->
 <div class="container mt-4">
   <div class="row">
-    <h1 class="text-center">Associe as Atividades ao Usuário</h1>
+    <h1 class="text-center">Associe as Atividades ao Usuário {{usuario?.id}}</h1>
+ 
 
-    <!-- Verifica se há atividades -->
+
     <ng-container *ngIf="atividadesDisponiveis.length > 0 || atividadesAssociadas.length > 0; else semAtividades">
-      
       <div class="col">
         <h2 class="text-center">Atividades Disponíveis</h2>
         <div

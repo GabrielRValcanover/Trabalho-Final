@@ -68,6 +68,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AtividadesService } from '../../services/atividades.service';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios-atividades',
@@ -79,6 +80,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 export class UsuariosAtividadesComponent implements OnInit {
 
   usuarios: Usuarios[] = [];
+  usuario?: Usuarios;
   usuarioID!: number;
   atividades: Atividades[] = [];
   atividadesDisponiveis: Atividades[] = [];
@@ -92,12 +94,15 @@ export class UsuariosAtividadesComponent implements OnInit {
     this.usuarioID = Number(this.route.snapshot.paramMap.get('id'));
     if (this.usuarioID) {
       await this.usuariosService.getUsuariosById(this.usuarioID);
+      // this.usuario = await this.usuariosService.getUsuariosById(this.usuarioID);
+
     }
-    this.atividadesService.getAllAtividades().then((atividades) => {
+    this.atividadesService.getAllAtividades().then(async (atividades) => {
       this.atividades = atividades;
       this.atividadesDisponiveis = [...atividades];
+      await this.loadAllUsuariosAtividadesAssociacoes();
     });
-    await this.loadAllUsuariosAtividadesAssociacoes();
+
   }
   async loadAllUsuariosAtividadesAssociacoes() {
     try {
@@ -106,19 +111,59 @@ export class UsuariosAtividadesComponent implements OnInit {
       const atividadesEncontradas = await Promise.all(
         atividadesIDs.map(id => this.atividadesService.getAtividadesById(id))
       );
-      this.atividadesAssociadas = atividadesEncontradas.filter(a => a !== undefined) as Atividades[];
-      this.atividadesDisponiveis = this.atividadesDisponiveis.filter(a => !atividadesIDs.includes(a.id ?? 0)
-      );
+      this.atividadesAssociadas = this.atividades.filter(a => a.id && atividadesIDs.includes(a.id));
+      this.atividadesDisponiveis = this.atividades.filter(a => a.id && !atividadesIDs.includes(a.id));
+
     } catch (error) {
       console.error('Erro ao carregar as atividades associadas:', error);
     }
   }
-  
-  dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
+  // dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex
+  //     );
+  //     const atividade = event.container.data[event.currentIndex];
+  //     if (atividade?.id !== undefined) {
+  //       if (associar) {
+  //         this.usuariosAtividadeService
+  //           .addMultiplosUsuariosAtividadesAssociacoes([
+  //             { usuarioID: this.usuarioID, atividadesID: atividade.id }
+  //           ])
+  //           .then(() => {
+  //             console.log(`Atividade ${atividade.nome} associada ao usuário ${this.usuarioID}`);
+  //             return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+  //           })
+  //           .then(associacoes => {
+  //             const idsAtividades = associacoes.map(a => a.atividadesID);
+  //             this.atividadesAssociadas = this.atividades.filter(a => idsAtividades.includes(a.id!));
+  //             this.atividadesDisponiveis = this.atividades.filter(a => !idsAtividades.includes(a.id!));
+  //           })
+  //           .catch(error => console.error('Erro ao associar atividade:', error));
+  //       } else {
+  //         this.usuariosAtividadeService
+  //           .deleteUsuarioAtividade(this.usuarioID, atividade.id)
+  //           .then(() => {
+  //             console.log(`Associação removida: atividade ${atividade.nome}`);
+  //             return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+  //           })
+  //           .then(associacoes => {
+  //             const idsAtividades = associacoes.map(a => a.atividadesID);
+  //             this.atividadesAssociadas = this.atividades.filter(a => idsAtividades.includes(a.id!));
+  //             this.atividadesDisponiveis = this.atividades.filter(a => !idsAtividades.includes(a.id!));
+  //           })
+  //           .catch(err => console.error('Erro ao remover associação:', err));
+  //       }
+  //     }
+  //   }
+  // }
+    dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,event.container.data,event.previousIndex,event.currentIndex
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex
       );
       const atividade = event.container.data[event.currentIndex];
       if (atividade?.id !== undefined) {
@@ -127,20 +172,35 @@ export class UsuariosAtividadesComponent implements OnInit {
             .addMultiplosUsuariosAtividadesAssociacoes([
               { usuarioID: this.usuarioID, atividadesID: atividade.id }
             ])
-            .then(() => console.log(`Atividade ${atividade.nome} associada ao usuário ${this.usuarioID}`))
+            .then(() => {
+              console.log(`Atividade ${atividade.nome} associada ao usuário ${this.usuarioID}`);
+              return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+            })
+            .then(associacoes => {
+              const idsAtividades = associacoes.map(a => a.atividadesID);
+              this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+              this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+            })
             .catch(error => console.error('Erro ao associar atividade:', error));
         } else {
-          
           this.usuariosAtividadeService
             .deleteUsuarioAtividade(this.usuarioID, atividade.id)
-            .then(() => console.log(` Associação removida: atividade ${atividade.nome}`))
+            .then(() => {
+              console.log(`Associação removida: atividade ${atividade.nome}`);
+              return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+            })
+            .then(associacoes => {
+              const idsAtividades = associacoes.map(a => a.atividadesID);
+              this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+              this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+            })
             .catch(err => console.error('Erro ao remover associação:', err));
         }
       }
     }
   }
 
-
+ 
 }
 
 
