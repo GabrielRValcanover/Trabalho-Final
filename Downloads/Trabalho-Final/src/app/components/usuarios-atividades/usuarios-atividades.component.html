@@ -1,24 +1,43 @@
 <div class="container mt-4">
-    <div class="row">
-        <h1 class="text-center">Selecione os Produtos para o Serviço</h1>
-        @if(produtosOriginal.length > 0 || produtosSelecionados.length > 0){
-        <div class="col">
-            <h2 class="text-center">Produtos Disponíveis</h2>
-            <div cdkDropList id="produtosOriginal" (cdkDropListDropped)="dropped($event, false)"
-                [cdkDropListData]="produtosOriginal" class="lista" [cdkDropListConnectedTo]="['produtosSelecionados']">
-                <div *ngFor="let produto of produtosOriginal" cdkDrag class="item">{{ produto.nome }}</div>
-            </div>
+  <div class="row">
+    <h1 class="text-center">Associe as Atividades ao Usuário</h1>
+
+    @if(atividadesDisponiveis.length > 0 || atividadesAssociadas.length > 0) {
+      <div class="col">
+        <h2 class="text-center">Atividades Disponíveis</h2>
+        <div
+          cdkDropList
+          id="atividadesDisponiveis"
+          (cdkDropListDropped)="dropped($event, false)"
+          [cdkDropListData]="atividadesDisponiveis"
+          class="lista"
+          [cdkDropListConnectedTo]="['atividadesAssociadas']"
+        >
+          <div *ngFor="let atividade of atividadesDisponiveis" cdkDrag class="item">
+            <strong>{{ atividade.nome }}</strong><br />
+            <small>{{ atividade.categoria }}</small>
+          </div>
         </div>
-        <div class="col">
-            <h2 class="text-center">Produtos Selecionados</h2>
-            <div cdkDropList id="produtosSelecionados" [cdkDropListData]="produtosSelecionados"
-                (cdkDropListDropped)="dropped($event, true)" class="lista"
-                [cdkDropListConnectedTo]="['produtosOriginal']">
-                <div *ngFor="let produto of produtosSelecionados" class="item" cdkDrag>{{ produto.nome }}</div>
-            </div>
+      </div>
+
+      <div class="col">
+        <h2 class="text-center">Atividades Associadas</h2>
+        <div
+          cdkDropList
+          id="atividadesAssociadas"
+          [cdkDropListData]="atividadesAssociadas"
+          (cdkDropListDropped)="dropped($event, true)"
+          class="lista"
+          [cdkDropListConnectedTo]="['atividadesDisponiveis']"
+        >
+          <div *ngFor="let atividade of atividadesAssociadas" cdkDrag class="item">
+            <strong>{{ atividade.nome }}</strong><br />
+            <small>{{ atividade.categoria }}</small>
+          </div>
         </div>
-        }@else {
-        <h1 class="text-center">Não há produtos cadastrados!</h1>
-        }
-    </div>
+      </div>
+    } @else {
+      <h2 class="text-center">Nenhuma atividade cadastrada!</h2>
+    }
+  </div>
 </div>

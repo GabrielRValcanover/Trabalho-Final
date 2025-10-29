@@ -3,6 +3,7 @@ import { CadastroUsuariosComponent } from './components/usuarios/cadastro-usuari
 import { ListarUsuariosComponent } from './components/usuarios/listar-usuarios/listar-usuarios.component';
 import { CadastrarAtividadesComponent } from './components/atividades/cadastrar-atividades/cadastrar-atividades.component';
 import { ListarAtividadesComponent } from './components/atividades/listar-atividades/listar-atividades.component';
+import { UsuariosAtividadesComponent } from './components/usuarios-atividades/usuarios-atividades.component';
 
 export const routes: Routes = [
     // { path: '', component: Homecomponent},
@@ -12,7 +13,7 @@ export const routes: Routes = [
     { path: 'atividades/listar-atividades', component: ListarAtividadesComponent },
     { path: 'usuarios/editar-usuarios/:id', component: CadastroUsuariosComponent },
     { path: 'atividades/editar-atividades/:id', component: CadastrarAtividadesComponent },
-    { path: 'usuarios-atividades/cadastro-usuarios', component: CadastroUsuariosComponent },
+    { path: 'usuarios/:id/atividades', component: UsuariosAtividadesComponent },
 
 
 
