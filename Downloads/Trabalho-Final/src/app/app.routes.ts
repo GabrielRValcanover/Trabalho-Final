@@ -12,6 +12,7 @@ export const routes: Routes = [
     { path: 'atividades/listar-atividades', component: ListarAtividadesComponent },
     { path: 'usuarios/editar-usuarios/:id', component: CadastroUsuariosComponent },
     { path: 'atividades/editar-atividades/:id', component: CadastrarAtividadesComponent },
+    { path: 'usuarios-atividades/cadastro-usuarios', component: CadastroUsuariosComponent },
 
 
 
