@@ -39,7 +39,7 @@ export class ListarUsuariosComponent implements OnInit {
         this.usuarioService.deleteUsuarios(id).then(() => {
           this.getAllUsuarios();
         });
-        Swal.fire('Excluído!', 'O Usuarios foi excluído com sucesso.', 'success');
+        Swal.fire('Excluído!', 'O Usuario foi excluído com sucesso.', 'success');
       }
     });
   }

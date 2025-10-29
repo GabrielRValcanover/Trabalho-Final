@@ -19,9 +19,10 @@ import { Atividades } from '../../../models/atividades.model';
 export class CadastroUsuariosComponent implements OnInit {
   constructor(private usuariosService: UsuariosService, private router: Router, private route: ActivatedRoute) { }
 
-  atividade: Atividades[] = [];
+
   usuarioID!: number;
   usuarios: Usuarios[] = [];
+  
   formUsuario = new FormGroup({
     nome: new FormControl(''),
     email: new FormControl(''),
