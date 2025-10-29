@@ -19,12 +19,18 @@ export class ListarUsuariosAtividadesComponent {
   async ngOnInit() {
     this.usuarios = await this.usuarioService.getAllUsuarios();
   }
+  getAllUsuarios() {
+    this.usuarioService.getAllUsuarios().then(usuarios => {
+      this.usuarios = usuarios;
+    });
 
-associarAtividades(usuarioId?: number) {
-  if (usuarioId) {
-    this.router.navigate(['/usuarios-atividades', 'associar', usuarioId]);
   }
-}
+
+  associarAtividades(usuarioId: number) {
+    if (usuarioId) {
+      this.router.navigate(['/usuarios/', usuarioId, 'atividades']);
+    }
+  }
 
 
   trackById(index: number, usuario: Usuarios): number {
