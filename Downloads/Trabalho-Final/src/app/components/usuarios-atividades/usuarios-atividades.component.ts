@@ -199,50 +199,125 @@ export class UsuariosAtividadesComponent implements OnInit {
   //     }
   //   }
   // }
-  dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      return;
-    }
-    const atividade = event.previousContainer.data[event.previousIndex];
+  // dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //     return;
+  //   }
+  //   const atividade = event.previousContainer.data[event.previousIndex];
 
-    transferArrayItem( event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex
-    );
-    if (!atividade?.id) {
-      console.warn('Atividade sem ID detectada, ignorando...');
-      return;
-    }
-    if (associar) {
-      this.usuariosAtividadeService
-        .addMultiplosUsuariosAtividadesAssociacoes([
-          { usuarioID: this.usuarioID, atividadesID: atividade.id }
-        ])
-        .then(() => {
-          console.log(`✅ Atividade "${atividade.nome}" associada ao usuário ${this.usuarioID}`);
-          return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
-        })
-        .then(associacoes => {
-          const idsAtividades = associacoes.map(a => a.atividadesID);
-          this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
-          this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
-        })
-        .catch(error => console.error('❌ Erro ao associar atividade:', error));
-    }
-    else {
-      this.usuariosAtividadeService
-        .deleteUsuarioAtividade(this.usuarioID, atividade.id)
-        .then(() => {
-          console.log(`🗑️ Associação removida: atividade "${atividade.nome}"`);
-          return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
-        })
-        .then(associacoes => {
-          const idsAtividades = associacoes.map(a => a.atividadesID);
-          this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
-          this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
-        })
-        .catch(err => console.error('❌ Erro ao remover associação:', err));
-    }
+  //   transferArrayItem( event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex
+  //   );
+  //   if (!atividade?.id) {
+  //     console.warn('Atividade sem ID detectada, ignorando...');
+  //     return;
+  //   }
+  //   if (associar) {
+  //     this.usuariosAtividadeService
+  //       .addMultiplosUsuariosAtividadesAssociacoes([
+  //         { usuarioID: this.usuarioID, atividadesID: atividade.id }
+  //       ])
+  //       .then(() => {
+  //         console.log(`✅ Atividade "${atividade.nome}" associada ao usuário ${this.usuarioID}`);
+  //         return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+  //       })
+  //       .then(associacoes => {
+  //         const idsAtividades = associacoes.map(a => a.atividadesID);
+  //         this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+  //         this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+  //       })
+  //       .catch(error => console.error('❌ Erro ao associar atividade:', error));
+  //   }
+  //   else {
+  //     this.usuariosAtividadeService
+  //       .deleteUsuarioAtividade(this.usuarioID, atividade.id)
+  //       .then(() => {
+  //         console.log(`🗑️ Associação removida: atividade "${atividade.nome}"`);
+  //         return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+  //       })
+  //       .then(associacoes => {
+  //         const idsAtividades = associacoes.map(a => a.atividadesID);
+  //         this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+  //         this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+  //       })
+  //       .catch(err => console.error('❌ Erro ao remover associação:', err));
+  //   }
+  // }
+
+
+dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
+  if (event.previousContainer === event.container) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    return;
   }
+  const atividade = event.previousContainer.data[event.previousIndex];
+  transferArrayItem(event.previousContainer.data,event.container.data,event.previousIndex,event.currentIndex
+  );
+  if (!atividade?.id) {
+    console.warn('Atividade sem ID detectada, ignorando...');
+    return;
+  }
+  if (associar) {
+    this.usuariosAtividadeService
+      .addMultiplosUsuariosAtividadesAssociacoes([
+        { usuarioID: this.usuarioID, atividadesID: atividade.id }
+      ])
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Atividade associada!',
+          text: `A atividade "${atividade.nome}" foi associada com sucesso ao usuário.`,
+          timer: 4000,
+          showConfirmButton: true
+        });
+        console.log(`✅ Atividade "${atividade.nome}" associada ao usuário ${this.usuarioID}`);
+        return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+      })
+      .then(associacoes => {
+        const idsAtividades = associacoes.map(a => a.atividadesID);
+        this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+        this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+      })
+      .catch(error => {
+        console.error('❌ Erro ao associar atividade:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro!',
+          text: 'Não foi possível associar a atividade. Tente novamente.',
+          showConfirmButton: true
+        });
+      });
+  } else {
+    this.usuariosAtividadeService
+      .deleteUsuarioAtividade(this.usuarioID, atividade.id)
+      .then(() => {
+        Swal.fire({
+          icon: 'info',
+          title: 'Associação removida!',
+          text: `A atividade "${atividade.nome}" foi removida do usuário.`,
+          timer: 4000,
+          showConfirmButton: true
+        });
+
+        console.log(`🗑️ Associação removida: atividade "${atividade.nome}"`);
+        return this.usuariosAtividadeService.getAssociacoesByUsuarioId(this.usuarioID);
+      })
+      .then(associacoes => {
+        const idsAtividades = associacoes.map(a => a.atividadesID);
+        this.atividadesAssociadas = this.atividades.filter(a => a.id && idsAtividades.includes(a.id));
+        this.atividadesDisponiveis = this.atividades.filter(a => a.id && !idsAtividades.includes(a.id));
+      })
+      .catch(err => {
+        console.error('❌ Erro ao remover associação:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro!',
+          text: 'Não foi possível remover a associação. Tente novamente.',
+          showConfirmButton: true
+        });
+      });
+  }
+}
 
 
 }
