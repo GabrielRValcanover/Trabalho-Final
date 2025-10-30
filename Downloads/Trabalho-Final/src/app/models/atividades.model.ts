@@ -5,6 +5,7 @@ export interface Atividades {
     dataInicio: Date;
     dataFim: Date;
     categoria: Categoria;
+    status: Status;
 
 
 }
@@ -15,4 +16,11 @@ export enum Categoria {
     trabalho = "Trabalho",
     lazer = "Lazer",
     pesquisa = "Pesquisa",
+}
+
+export enum Status {
+  pendente = 'Pendente',
+  emAndamento = 'Em andamento',
+  concluida = 'Concluída',
+  cancelada = 'Cancelada',
 }

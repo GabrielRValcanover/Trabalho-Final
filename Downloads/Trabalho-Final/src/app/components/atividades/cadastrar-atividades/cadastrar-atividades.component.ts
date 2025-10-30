@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Atividades, Categoria } from '../../../models/atividades.model';
+import { Atividades, Categoria, Status } from '../../../models/atividades.model';
 import { AtividadesService } from '../../../services/atividades.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
@@ -17,12 +17,15 @@ export class CadastrarAtividadesComponent implements OnInit {
   atividades: Atividades[] = [];
   categorias = Object.values(Categoria);
 
+
   formAtividades = new FormGroup({
     nome: new FormControl<string | null>(null),
     descricao: new FormControl<string | null>(null),
     dataInicio: new FormControl<string | null>(null),
     dataFim: new FormControl<string | null>(null),
     categoria: new FormControl<Categoria | null>(null),
+    status: new FormControl<Status | null>(Status.emAndamento),
+
   });
 
 
@@ -39,7 +42,8 @@ export class CadastrarAtividadesComponent implements OnInit {
           descricao: this.formAtividades.value.descricao!,
           dataInicio: new Date(this.formAtividades.value.dataInicio!),
           dataFim: new Date(this.formAtividades.value.dataFim!),
-          categoria: this.formAtividades.value.categoria as Categoria
+          categoria: this.formAtividades.value.categoria as Categoria,
+          status: Status.emAndamento
         };
 
         this.atividadesService.addAtividades(novaAtividade).then(() => {
@@ -56,7 +60,7 @@ export class CadastrarAtividadesComponent implements OnInit {
       }
     }
   }
- 
+
   async ngOnInit() {
     this.atividadesID = Number(this.route.snapshot.paramMap.get('id'));
 
@@ -68,8 +72,9 @@ export class CadastrarAtividadesComponent implements OnInit {
           nome: new FormControl(atividades.nome),
           descricao: new FormControl(atividades.descricao),
           dataInicio: new FormControl<string | null>(atividades.dataInicio ? new Date(atividades.dataInicio).toISOString().substring(0, 10) : null),
-          dataFim: new FormControl<string | null>(atividades.dataFim ? new Date(atividades.dataFim).toISOString().substring(0, 10): null),
+          dataFim: new FormControl<string | null>(atividades.dataFim ? new Date(atividades.dataFim).toISOString().substring(0, 10) : null),
           categoria: new FormControl<Categoria | null>(atividades.categoria ?? null),
+          status: new FormControl<Status | null>(atividades.status ?? Status.emAndamento)
         });
       }
     }
@@ -83,7 +88,8 @@ export class CadastrarAtividadesComponent implements OnInit {
       descricao: this.formAtividades.value.descricao!,
       dataInicio: new Date(this.formAtividades.value.dataInicio!),
       dataFim: new Date(this.formAtividades.value.dataFim!),
-      categoria: this.formAtividades.value.categoria! as Categoria
+      categoria: this.formAtividades.value.categoria! as Categoria,
+      status: this.formAtividades.value.status as Status
     };
     this.atividadesService.updateAtividade(atividadeEditada).then(() => {
       Swal.fire('Atualizado!', 'A Atividade foi atualizada com sucesso.',
@@ -91,6 +97,9 @@ export class CadastrarAtividadesComponent implements OnInit {
       this.router.navigate(['atividades/listar-atividades']);
     });
   }
+
+ 
+
 
 
 

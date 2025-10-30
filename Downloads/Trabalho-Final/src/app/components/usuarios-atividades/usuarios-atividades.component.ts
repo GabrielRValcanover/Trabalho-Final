@@ -266,7 +266,7 @@ dropped(event: CdkDragDrop<Atividades[]>, associar: boolean) {
         Swal.fire({
           icon: 'success',
           title: 'Atividade associada!',
-          text: `A atividade "${atividade.nome}" foi associada com sucesso ao usuário.`,
+          text: `A atividade "${atividade.nome}" foi associada com sucesso ao usuário `,
           timer: 4000,
           showConfirmButton: true
         });
