@@ -48,15 +48,29 @@ atividades: Atividades[] = []
        }
      });
    }
-    atualizarStatus(atividade: Atividades) {
-    const hoje = new Date();
-    const dataFim = new Date(atividade.dataFim);
+  //   atualizarStatus(atividade: Atividades) {
+  //   const hoje = new Date();
+  //   const dataFim = new Date(atividade.dataFim);
 
-    if (dataFim < hoje && atividade.status !== Status.concluida) {
-      atividade.status = Status.pendente;
-      this.atividadesService.updateAtividade(atividade);
-    }
+  //   if (dataFim < hoje && atividade.status !== Status.concluida) {
+  //     atividade.status = Status.pendente;
+  //     this.atividadesService.updateAtividade(atividade);
+  //   }
+  // }
+
+  atualizarStatus(atividade: Atividades) {
+  const hoje = new Date();
+  const dataFim = new Date(atividade.dataFim);
+  if (dataFim < hoje && atividade.status !== Status.concluida) {
+    atividade.status = Status.pendente;
   }
+  this.atividadesService.updateAtividade(atividade).then(() => {
+    this.getAllAtividades();
+  }).catch(err => {
+    console.error('Erro ao atualizar status:', err);
+  });
+}
+
   trackById(index: number, item: any): number {
   return item.id;
 }
