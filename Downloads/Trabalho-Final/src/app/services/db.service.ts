@@ -10,7 +10,7 @@ import { UsuariosAtividades } from '../models/usuarios-atividades.model';
 export class DbService extends Dexie {
   usuarios!: Table<Usuarios, number>;
    atividades!: Table<Atividades, number>;
-   usuariosAtividades!: Table<UsuariosAtividades,[number, number]>;
+   usuariosAtividade!: Table<UsuariosAtividades,[number, number]>;
 
 
   constructor() { 
@@ -18,7 +18,7 @@ export class DbService extends Dexie {
     this.version(1).stores({
       usuarios: '++id, nome, email',
       atividades: '++id, nome, descricao, dataInicio, dataFim, categoria',
-      usuarioAtividade: '[usuarioID+atividadesID], usuarioID, atividadesID'
+      usuariosAtividade: '[usuarioID+atividadesID], usuarioID, atividadesID'
 
       });
   }
