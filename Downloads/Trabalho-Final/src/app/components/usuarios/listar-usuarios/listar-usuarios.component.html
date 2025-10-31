@@ -18,9 +18,12 @@
                     <th scope="row" class="text-center">{{ usuarios.id}}</th>
                     <td>{{ usuarios.nome }}</td>
                     <td>{{ usuarios.email }}</td>
-                    <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuarios.id!)"></i>
-                    <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuarios.id!)"></i>
-
+                    <td>
+                        <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuarios.id!)"></i>
+                        <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuarios.id!)"></i>
+                        <i class="bi bi-list-task" title="Ver atividades"
+                            (click)="listarAtividades(usuarios.id!)"></i>
+                    </td>
                 </tr>
                 }
             </tbody>

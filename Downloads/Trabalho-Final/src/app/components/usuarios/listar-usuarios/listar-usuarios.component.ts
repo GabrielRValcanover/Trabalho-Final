@@ -3,6 +3,7 @@ import { Usuarios } from '../../../models/usuarios.model';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { db } from '../../../services/db.service';
 
 @Component({
   selector: 'app-listar-usuarios',
@@ -43,6 +44,39 @@ export class ListarUsuariosComponent implements OnInit {
       }
     });
   }
+  async listarAtividades(usuarioID: number) {
+    try {
+      // Busca os vínculos do usuário
+      const vinculos = await db.usuariosAtividade
+        .where('usuarioID')
+        .equals(usuarioID)
+        .toArray();
 
+      // Pega os IDs das atividades
+      const atividadesIDs = vinculos.map(v => v.atividadesID);
+
+      if (atividadesIDs.length === 0) {
+        alert('Este usuário não possui atividades vinculadas.');
+        return;
+      }
+
+      // Busca as atividades correspondentes
+      const atividades = await db.atividades
+        .where('id')
+        .anyOf(atividadesIDs)
+        .toArray();
+
+      if (atividades.length > 0) {
+        const nomes = atividades.map(a => a.nome).join(', ');
+        alert(`Atividades do usuário: ${nomes}`);
+      } else {
+        alert('Este usuário não possui atividades vinculadas.');
+      }
+
+    } catch (error) {
+      console.error('Erro ao listar atividades:', error);
+      alert('Ocorreu um erro ao buscar as atividades.');
+    }
+  }
 
 }

@@ -6,6 +6,9 @@ import { Usuarios } from '../models/usuarios.model';
   providedIn: 'root'
 })
 export class UsuariosService {
+  getAtividadesByUsuario(idUsuario: number) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private dbService: DbService) { }
   addUsuarios(usuarios: Usuarios) {

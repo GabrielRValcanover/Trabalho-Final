@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { db } from '../../../services/db.service';
 
 @Component({
   selector: 'app-listar-atividades',
@@ -14,13 +15,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class ListarAtividadesComponent implements OnInit {
 
-atividades: Atividades[] = []
+  atividades: Atividades[] = []
   statusOptions = Object.values(Status);
 
   constructor(private atividadesService: AtividadesService, private router: Router) { }
 
   ngOnInit() {
     this.getAllAtividades();
+     this.listarUsuarios();
   }
   getAllAtividades() {
     this.atividadesService.getAllAtividades().then(atividades => {
@@ -28,26 +30,26 @@ atividades: Atividades[] = []
     });
   }
 
- editAtividades(id: number) {
-     this.router.navigate(['/atividades/editar-atividades', id]);
-   }
-   deleteAtividade(id: number) {
-     Swal.fire({
-       title: 'Tem certeza?',
-       text: 'Esta ação não pode ser desfeita!',
-       icon: 'warning',
-       showCancelButton: true,
-       confirmButtonText: 'Sim, excluir!',
-       cancelButtonText: 'Cancelar'
-     }).then((result) => {
-       if (result.isConfirmed) {
-         this.atividadesService.deleteAtividade(id).then(() => {
-           this.getAllAtividades();
-         });
-         Swal.fire('Excluído!', 'A Atividade foi excluída com sucesso.', 'success');
-       }
-     });
-   }
+  editAtividades(id: number) {
+    this.router.navigate(['/atividades/editar-atividades', id]);
+  }
+  deleteAtividade(id: number) {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Esta ação não pode ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.atividadesService.deleteAtividade(id).then(() => {
+          this.getAllAtividades();
+        });
+        Swal.fire('Excluído!', 'A Atividade foi excluída com sucesso.', 'success');
+      }
+    });
+  }
   //   atualizarStatus(atividade: Atividades) {
   //   const hoje = new Date();
   //   const dataFim = new Date(atividade.dataFim);
@@ -59,20 +61,45 @@ atividades: Atividades[] = []
   // }
 
   atualizarStatus(atividade: Atividades) {
-  const hoje = new Date();
-  const dataFim = new Date(atividade.dataFim);
-  if (dataFim < hoje && atividade.status !== Status.concluida) {
-    atividade.status = Status.pendente;
+    const hoje = new Date();
+    const dataFim = new Date(atividade.dataFim);
+    if (dataFim < hoje && atividade.status !== Status.concluida) {
+      atividade.status = Status.pendente;
+    }
+    this.atividadesService.updateAtividade(atividade).then(() => {
+      this.getAllAtividades();
+    }).catch(err => {
+      console.error('Erro ao atualizar status:', err);
+    });
   }
-  this.atividadesService.updateAtividade(atividade).then(() => {
-    this.getAllAtividades();
-  }).catch(err => {
-    console.error('Erro ao atualizar status:', err);
-  });
-}
 
   trackById(index: number, item: any): number {
-  return item.id;
-}
+    return item.id;
+  }
+
+  listarUsuarios() {
+    const usuarioId = Number(localStorage.getItem('usuarioId')); 
+    if (!usuarioId) {
+      console.log('Usuário não encontrado.');
+      return;
+    }
+    db.usuariosAtividade
+      .where('usuarioID')
+      .equals(usuarioId)
+      .toArray()
+      .then(vinculos => {
+        const atividadesIDs = vinculos.map(v => v.atividadesID);
+
+        db.atividades
+          .where('id')
+          .anyOf(atividadesIDs)
+          .toArray()
+          .then(atividades => {
+            this.atividades = atividades;
+            console.log('Atividades do usuário:', this.atividades);
+          });
+      });
+  }
+
 
 }
