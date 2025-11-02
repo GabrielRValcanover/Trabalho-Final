@@ -1,128 +1,52 @@
-<!-- <div class="container">
-    @if(atividades.length > 0){
-    <div class="row">
-        <h1 class="text-center">Atividades Cadastradas</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-center">#</th>
-                    <th scope="col" class="text-center">Nome</th>
-                    <th scope="col" class="text-center">Descrição</th>
-                    <th scope="col" class="text-center">Data Inicial</th>
-                    <th scope="col" class="text-center">Data final</th> 
-                    <td>{{ atividade.dataInicio | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ atividade.dataFim | date: 'dd/MM/yyyy' }}</td>
-                    <th scope="col" class="text-center">Categoria</th>
 
-
-                </tr>
-            </thead>
-            <tbody>
-                @for(atividade of atividades; track atividade.id){
-                <tr>
-                    <th scope="row" class="text-center">{{ atividade.id}}</th>
-                    <td>{{ atividade.nome }}</td>
-                    <td>{{ atividade.descricao }}</td>
-                    <td>{{ atividade.dataInicio }}</td>
-                    <td>{{ atividade.dataFim }}</td>
-                    <td>{{ atividade.categoria }}</td>
-
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    }@else {
-    <div class="row">
-        <h1 class="text-center">Nenhuma atividade Cadastrada</h1>
-    </div>
-    }
-</div> -->
-<!-- <div class="container">
-    @if (atividades.length > 0) {
-    <div class="row">
-        <h1 class="text-center">Atividades Cadastradas</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-center">#</th>
-                    <th scope="col" class="text-center">Nome</th>
-                    <th scope="col" class="text-center">Descrição</th>
-                    <th scope="col" class="text-center">Data Inicial</th>
-                    <th scope="col" class="text-center">Data Final</th>
-                    <th scope="col" class="text-center">Categoria</th>
-                    <th scope="col" class="text-center">Opção</th>
-                      <th scope="col" class="text-center">status</th>
-                    
-                   
-
-                </tr>
-            </thead>
-            <tbody>
-                @for (atividade of atividades; track atividade.id) {
-                <tr>
-                    <th scope="row" class="text-center">{{ atividade.id }}</th>
-                    <td class="text-center">{{ atividade.nome }}</td>
-                    <td class="text-center">{{ atividade.descricao }}</td>
-                    <td class="text-center">{{ atividade.dataInicio | date: 'dd/MM/yyyy':'UTC' }}</td>
-                    <td class="text-center">{{ atividade.dataFim | date: 'dd/MM/yyyy':'UTC' }}</td>
-                    <td class="text-center">{{ atividade.categoria }}</td>
-                    <i class="bi bi-pen edit-icon" (click)="editAtividades(atividade.id!)"></i>
-                    <i class="bi bi-trash mx-2" (click)="deleteAtividade(atividade.id!)"></i>
-                     <select id="status" formControlName="status">
-                        <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
-                    </select>
-
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    } @else {
-    <div class="row">
-        <h1 class="text-center">Nenhuma atividade cadastrada</h1>
-    </div>
-    }
-</div> -->
 <div class="container">
-    <div class="row" *ngIf="atividades.length > 0; else nenhumRegistro">
+    <div class="row mb-3">
+        <label for="filtro" class="col-sm-2 col-form-label fw-bold text-end">Pesquisar:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="filtro" placeholder="Filtrar por categoria..."
+                [formControl]="filtro" />
+        </div>
+    </div>
+
+    <div class="row" *ngIf="categoriaFiltradas.length > 0; else nenhumRegistro">
         <h1 class="text-center mb-3">Atividades Cadastradas</h1>
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col" class="text-center">#</th>
-                    <th scope="col" class="text-center">Nome</th>
-                    <th scope="col" class="text-center">Descrição</th>
-                    <th scope="col" class="text-center">Data Inicial</th>
-                    <th scope="col" class="text-center">Data Final</th>
-                    <th scope="col" class="text-center">Categoria</th>
-                    <th scope="col" class="text-center">Opção</th>
-                    <th scope="col" class="text-center">Status</th>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Data Inicial</th>
+                    <th>Data Final</th>
+                    <th>Categoria</th>
+                    <th>Opção</th>
+                    <th>Status</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr *ngFor="let atividade of atividades; trackBy: trackById">
-                    <th scope="row" class="text-center">{{ atividade.id }}</th>
-                    <td class="text-center">{{ atividade.nome }}</td>
-                    <td class="text-center">{{ atividade.descricao }}</td>
-                    <td class="text-center">{{ atividade.dataInicio | date:'dd/MM/yyyy':'UTC' }}</td>
-                    <td class="text-center">{{ atividade.dataFim | date:'dd/MM/yyyy':'UTC' }}</td>
-                    <td class="text-center">{{ atividade.categoria }}</td>
-                    <td class="text-center">
-                        <i class="bi bi-pen edit-icon" (click)="editAtividades(atividade.id!)"></i>
+                <tr *ngFor="let atividade of categoriaFiltradas; trackBy: trackById">
+                    <td>{{ atividade.id }}</td>
+                    <td>{{ atividade.nome }}</td>
+                    <td>{{ atividade.descricao }}</td>
+                    <td>{{ atividade.dataInicio | date:'dd/MM/yyyy':'UTC'}}</td>
+                    <td>{{ atividade.dataFim | date:'dd/MM/yyyy': 'UTC' }}</td>
+                    <td>{{ atividade.categoria }}</td>
+                    <td>
+                        <i class="bi bi-pen" (click)="editAtividades(atividade.id!)"></i>
                         <i class="bi bi-trash mx-2" (click)="deleteAtividade(atividade.id!)"></i>
                     </td>
-                    <td class="text-center">
+                    <td>
                         <select class="form-select form-select-sm" [(ngModel)]="atividade.status"
                             (change)="atualizarStatus(atividade)">
                             <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
                         </select>
-
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     <ng-template #nenhumRegistro>
         <div class="row">
             <h1 class="text-center mt-3">Nenhuma atividade cadastrada</h1>

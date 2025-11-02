@@ -4,12 +4,12 @@ import { AtividadesService } from '../../../services/atividades.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { db } from '../../../services/db.service';
 
 @Component({
   selector: 'app-listar-atividades',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,ReactiveFormsModule],
   templateUrl: './listar-atividades.component.html',
   styleUrl: './listar-atividades.component.css'
 })
@@ -17,18 +17,37 @@ export class ListarAtividadesComponent implements OnInit {
 
   atividades: Atividades[] = []
   statusOptions = Object.values(Status);
+  filtro = new FormControl('');
+  categoriaFiltradas: Atividades[] = [];
+
+
 
   constructor(private atividadesService: AtividadesService, private router: Router) { }
 
+  // ngOnInit() {
+  //   this.getAllAtividades();
+  //   this.listarUsuarios();
+  //     this.categoriaFiltradas = this.atividades;
+  //    this.filtro.valueChanges.subscribe((valor) => {
+  //     this.getFiltrarCategoria(valor || '');
+  //   });
+  // }
+
   ngOnInit() {
-    this.getAllAtividades();
-     this.listarUsuarios();
-  }
-  getAllAtividades() {
-    this.atividadesService.getAllAtividades().then(atividades => {
-      this.atividades = atividades;
-    });
-  }
+  this.listarUsuarios();
+  this.getAllAtividades().then(() => {
+    this.categoriaFiltradas = this.atividades;
+  });
+  this.filtro.valueChanges.subscribe(valor => {
+    this.getFiltrarCategoria(valor || '');
+  });
+}
+  getAllAtividades(): Promise<void> {
+  return this.atividadesService.getAllAtividades().then(atividades => {
+    this.atividades = atividades;
+  });
+}
+
 
   editAtividades(id: number) {
     this.router.navigate(['/atividades/editar-atividades', id]);
@@ -50,15 +69,6 @@ export class ListarAtividadesComponent implements OnInit {
       }
     });
   }
-  //   atualizarStatus(atividade: Atividades) {
-  //   const hoje = new Date();
-  //   const dataFim = new Date(atividade.dataFim);
-
-  //   if (dataFim < hoje && atividade.status !== Status.concluida) {
-  //     atividade.status = Status.pendente;
-  //     this.atividadesService.updateAtividade(atividade);
-  //   }
-  // }
 
   atualizarStatus(atividade: Atividades) {
     const hoje = new Date();
@@ -78,7 +88,7 @@ export class ListarAtividadesComponent implements OnInit {
   }
 
   listarUsuarios() {
-    const usuarioId = Number(localStorage.getItem('usuarioId')); 
+    const usuarioId = Number(localStorage.getItem('usuarioId'));
     if (!usuarioId) {
       console.log('Usuário não encontrado.');
       return;
@@ -101,5 +111,17 @@ export class ListarAtividadesComponent implements OnInit {
       });
   }
 
+
+ getFiltrarCategoria(filtro: string | null) {
+  const CategoriasFiltradas = (filtro || '').toLowerCase();
+  if (!CategoriasFiltradas) {
+    this.categoriaFiltradas = this.atividades;
+  } else {
+    this.categoriaFiltradas = this.atividades.filter(a =>
+      String(a.categoria).toLowerCase().includes(CategoriasFiltradas)
+    );
+  }
+
+ }
 
 }
