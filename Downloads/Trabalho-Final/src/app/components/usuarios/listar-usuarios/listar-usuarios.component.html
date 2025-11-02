@@ -1,19 +1,20 @@
-<div class="container">
+<!-- <div class="container">
     @if(usuarios.length > 0){
     <div class="row col-md-8 offset-md-2">
         <h1 class="text-center  mb-3">Usuarios Cadastrados</h1>
         <table class="table table-striped table-bordered ">
+
             <thead class="table-dark">
                 <tr>
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Nome</th>
                     <th scope="col" class="text-center">email</th>
                     <th scope="col" class="text-center">Editar/Excluir</th>
-                     <th scope="col" class="text-center">Atividades do Usuario</th>
+                    <th scope="col" class="text-center">Atividades do Usuario</th>
 
                 </tr>
             </thead>
-            <tbody>
+             <tbody>
                 @for(usuarios of usuarios; track usuarios.id){
                 <tr>
                     <th scope="row" class="text-center">{{ usuarios.id}}</th>
@@ -25,10 +26,34 @@
                     </td>
                     <td>
                         <i class="bi bi-list-task" title="Ver atividades" (click)="listarAtividades(usuarios.id!)"></i>
+                    </td> 
+                    <td>{{ usuarios.nome }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="listarAtividades(usuarios.id!, usuarios.nome)">
+                            Ver Atividades
+                        </button>
                     </td>
                 </tr>
                 }
+            </tbody> 
+            <tbody>
+                <tr *ngFor="let usuario of usuarios; trackBy: trackById">
+                    <th scope="row" class="text-center">{{ usuario.id }}</th>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuario.id!)"></i>
+                        <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuario.id!)"></i>
+                    </td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="listarAtividades(usuario.id!, usuarios.nome)">
+                            Ver Atividades
+                        </button>
+                    </td>
+                </tr>
             </tbody>
+
         </table>
     </div>
     }@else {
@@ -36,4 +61,69 @@
         <h1 class="text-center">Nenhum usuario Cadastrado</h1>
     </div>
     }
+</div> -->
+<div class="container">
+    <div *ngIf="usuarios.length > 0; else nenhumUsuario">
+        <div class="row col-md-8 offset-md-2">
+            <h1 class="text-center mb-3">Usuários Cadastrados</h1>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Editar/Excluir</th>
+                        <th>Atividades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarios; trackBy: trackById">
+                        <th>{{ usuario.id }}</th>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>
+                            <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuario.id!)"></i>
+                            <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuario.id!)"></i>
+                        </td>
+                        <td>
+                                <i class="bi bi-list-task" title="Ver atividades" (click)="listarAtividades(usuario.id!,usuario.nome)"></i>
+                            <!-- <button class="btn btn-primary" (click)="listarAtividades(usuario.id!, usuario.nome)">
+                                Ver Atividades
+                            </button> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ng-template #nenhumUsuario>
+        <div class="row">
+            <h1 class="text-center mt-3">Nenhum usuário cadastrado</h1>
+        </div>
+    </ng-template>
+</div>
+
+<div class="modal fade" id="atividadesUsuarioModal" tabindex="-1" aria-labelledby="atividadesUsuarioModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="atividadesUsuarioModalLabel">
+                    {{ usuarioModalNome }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Atividades vinculadas:</strong></p>
+                <ul>
+                    <li *ngFor="let atividade of atividadesModal">{{ atividade.nome }}</li>
+                </ul>
+                <p *ngIf="atividadesModal.length === 0">Nenhuma atividade vinculada.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
