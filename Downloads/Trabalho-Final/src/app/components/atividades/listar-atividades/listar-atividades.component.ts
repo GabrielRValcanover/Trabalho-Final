@@ -9,7 +9,7 @@ import { db } from '../../../services/db.service';
 
 @Component({
   selector: 'app-listar-atividades',
-  imports: [CommonModule, FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './listar-atividades.component.html',
   styleUrl: './listar-atividades.component.css'
 })
@@ -34,41 +34,46 @@ export class ListarAtividadesComponent implements OnInit {
   // }
 
   ngOnInit() {
-  this.listarUsuarios();
-  this.getAllAtividades().then(() => {
-    this.categoriaFiltradas = this.atividades;
-  });
-  this.filtro.valueChanges.subscribe(valor => {
-    this.getFiltrarCategoria(valor || '');
-  });
-}
+    this.listarUsuarios();
+    this.getAllAtividades().then(() => {
+      this.categoriaFiltradas = this.atividades;
+    });
+    this.filtro.valueChanges.subscribe(valor => {
+      this.getFiltrarCategoria(valor || '');
+    });
+
+  }
   getAllAtividades(): Promise<void> {
-  return this.atividadesService.getAllAtividades().then(atividades => {
-    this.atividades = atividades;
-  });
-}
+    return this.atividadesService.getAllAtividades().then(atividades => {
+      this.atividades = atividades;
+    });
+  }
 
 
   editAtividades(id: number) {
     this.router.navigate(['/atividades/editar-atividades', id]);
   }
-  deleteAtividade(id: number) {
-    Swal.fire({
-      title: 'Tem certeza?',
-      text: 'Esta ação não pode ser desfeita!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.atividadesService.deleteAtividade(id).then(() => {
-          this.getAllAtividades();
-        });
+ deleteAtividade(id: number) {
+  Swal.fire({
+    title: 'Tem certeza?',
+    text: 'Esta ação não pode ser desfeita!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, excluir!',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.atividadesService.deleteAtividade(id).then(() => {
+        this.atividades = this.atividades.filter(atividades => atividades.id !== id);
+        this.categoriaFiltradas = this.categoriaFiltradas.filter(atividades => atividades.id !== id);
         Swal.fire('Excluído!', 'A Atividade foi excluída com sucesso.', 'success');
-      }
-    });
-  }
+      }).catch(err => {
+        console.error('Erro ao excluir atividade:', err);
+        Swal.fire('Erro!', 'Não foi possível excluir a atividade.', 'error');
+      });
+    }
+  });
+}
 
   atualizarStatus(atividade: Atividades) {
     const hoje = new Date();
@@ -93,35 +98,27 @@ export class ListarAtividadesComponent implements OnInit {
       console.log('Usuário não encontrado.');
       return;
     }
-    db.usuariosAtividade
-      .where('usuarioID')
-      .equals(usuarioId)
-      .toArray()
-      .then(vinculos => {
-        const atividadesIDs = vinculos.map(v => v.atividadesID);
+    db.usuariosAtividade.where('usuarioID').equals(usuarioId).toArray().then(vinculos => {
+      const atividadesIDs = vinculos.map(vinculados => vinculados.atividadesID);
 
-        db.atividades
-          .where('id')
-          .anyOf(atividadesIDs)
-          .toArray()
-          .then(atividades => {
-            this.atividades = atividades;
-            console.log('Atividades do usuário:', this.atividades);
-          });
-      });
+      db.atividades.where('id').anyOf(atividadesIDs).toArray().then(atividades => {
+         this.atividades = atividades;
+          console.log('Atividades do usuário:', this.atividades);
+        });
+    });
   }
 
 
- getFiltrarCategoria(filtro: string | null) {
-  const CategoriasFiltradas = (filtro || '').toLowerCase();
-  if (!CategoriasFiltradas) {
-    this.categoriaFiltradas = this.atividades;
-  } else {
-    this.categoriaFiltradas = this.atividades.filter(a =>
-      String(a.categoria).toLowerCase().includes(CategoriasFiltradas)
-    );
-  }
+  getFiltrarCategoria(filtro: string | null) {
+    const CategoriasFiltradas = (filtro || '').toLowerCase();
+    if (!CategoriasFiltradas) {
+      this.categoriaFiltradas = this.atividades;
+    } else {
+      this.categoriaFiltradas = this.atividades.filter(a =>
+        String(a.categoria).toLowerCase().includes(CategoriasFiltradas)
+      );
+    }
 
- }
+  }
 
 }

@@ -1,67 +1,4 @@
-<!-- <div class="container">
-    @if(usuarios.length > 0){
-    <div class="row col-md-8 offset-md-2">
-        <h1 class="text-center  mb-3">Usuarios Cadastrados</h1>
-        <table class="table table-striped table-bordered ">
 
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col" class="text-center">#</th>
-                    <th scope="col" class="text-center">Nome</th>
-                    <th scope="col" class="text-center">email</th>
-                    <th scope="col" class="text-center">Editar/Excluir</th>
-                    <th scope="col" class="text-center">Atividades do Usuario</th>
-
-                </tr>
-            </thead>
-             <tbody>
-                @for(usuarios of usuarios; track usuarios.id){
-                <tr>
-                    <th scope="row" class="text-center">{{ usuarios.id}}</th>
-                    <td>{{ usuarios.nome }}</td>
-                    <td>{{ usuarios.email }}</td>
-                    <td>
-                        <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuarios.id!)"></i>
-                        <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuarios.id!)"></i>
-                    </td>
-                    <td>
-                        <i class="bi bi-list-task" title="Ver atividades" (click)="listarAtividades(usuarios.id!)"></i>
-                    </td> 
-                    <td>{{ usuarios.nome }}</td>
-                    <td>
-                        <button class="btn btn-primary" (click)="listarAtividades(usuarios.id!, usuarios.nome)">
-                            Ver Atividades
-                        </button>
-                    </td>
-                </tr>
-                }
-            </tbody> 
-            <tbody>
-                <tr *ngFor="let usuario of usuarios; trackBy: trackById">
-                    <th scope="row" class="text-center">{{ usuario.id }}</th>
-                    <td>{{ usuario.nome }}</td>
-                    <td>{{ usuario.email }}</td>
-                    <td>
-                        <i class="bi bi-pen edit-icon" (click)="editUsuarios(usuario.id!)"></i>
-                        <i class="bi bi-trash mx-2" (click)="deleteUsuarios(usuario.id!)"></i>
-                    </td>
-                    <td>{{ usuario.nome }}</td>
-                    <td>
-                        <button class="btn btn-primary" (click)="listarAtividades(usuario.id!, usuarios.nome)">
-                            Ver Atividades
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-    </div>
-    }@else {
-    <div class="row">
-        <h1 class="text-center">Nenhum usuario Cadastrado</h1>
-    </div>
-    }
-</div> -->
 <div class="container">
     <div *ngIf="usuarios.length > 0; else nenhumUsuario">
         <div class="row col-md-8 offset-md-2">
@@ -87,9 +24,6 @@
                         </td>
                         <td>
                                 <i class="bi bi-list-task" title="Ver atividades" (click)="listarAtividades(usuario.id!,usuario.nome)"></i>
-                            <!-- <button class="btn btn-primary" (click)="listarAtividades(usuario.id!, usuario.nome)">
-                                Ver Atividades
-                            </button> -->
                         </td>
                     </tr>
                 </tbody>
