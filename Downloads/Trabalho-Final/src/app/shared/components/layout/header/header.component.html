@@ -22,13 +22,6 @@
     </symbol>
 </svg>
 <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-        aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" aria-hidden="true">
-            <use href="#circle-half"></use>
-        </svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
@@ -94,8 +87,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2"
                     viewBox="0 0 24 24">
-                    <!-- <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path> -->
-                    <!-- <circle cx="12" cy="13" r="4"></circle> -->
                 </svg>
                 <strong>E.E.E.F. ALEGRIA DE VIVER</strong>
             </a>
@@ -107,7 +98,7 @@
     </div>
 </header>
 <main>
- 
+
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -118,9 +109,9 @@
                             xmlns="http://www.w3.org/2000/svg">
                             <title>Imagem de um usuário</title>
                             <rect width="100%" height="100%" rx="15" ry="15" fill="#55595c" />
-                            <image href="./imagens/usuario.jpg" x="0" y="0" width="100%" height="100%"
-                                alt="cadastro dos usuarios" />
+                            <image href="/imagens/usuario.png" x="0" y="0" width="100%" height="100%" />
                         </svg>
+
                         <div class="card-body">
                             <p class="card-text">
                                 CADASTRO DE USUARIOS
@@ -131,7 +122,7 @@
                                         routerLinkActive="active">
                                         Cadastro de usuários
                                     </a>
-                                   <a class="btn btn-sm btn-outline-secondary" routerLink="usuarios/listar-usuarios"
+                                    <a class="btn btn-sm btn-outline-secondary" routerLink="usuarios/listar-usuarios"
                                         routerLinkActive="active">
                                         lista de usuários
                                     </a>
@@ -140,6 +131,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col">
                     <div class="card shadow-sm" style="border-style: solid; border-color: #000000; border-width: 1px;">
                         <svg aria-label="Imagem de um usuário" class="bd-placeholder-img card-img-top" height="100"
@@ -147,7 +140,7 @@
                             xmlns="http://www.w3.org/2000/svg">
                             <title>Imagem das atividades</title>
                             <rect width="100%" height="100%" rx="15" ry="15" fill="#55595c" />
-                            <image href="./imagens/usuario.png" x="0" y="0" width="100%" height="100%"
+                            <image href="/imagens/atividades.png" x="0" y="0" width="100%" height="100%"
                                 alt="cadastro das atividades" />
                         </svg>
                         <div class="card-body">
@@ -156,12 +149,12 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                   <a class="btn btn-sm btn-outline-secondary" routerLink="atividades/cadastro-atividades"
-                                        routerLinkActive="active">
+                                    <a class="btn btn-sm btn-outline-secondary"
+                                        routerLink="atividades/cadastro-atividades" routerLinkActive="active">
                                         Cadastro de Atividades
                                     </a>
-                                  <a class="btn btn-sm btn-outline-secondary" routerLink="atividades/listar-atividades"
-                                        routerLinkActive="active">
+                                    <a class="btn btn-sm btn-outline-secondary"
+                                        routerLink="atividades/listar-atividades" routerLinkActive="active">
                                         Lista de Atividades
                                     </a>
                                 </div>
@@ -185,15 +178,15 @@
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="usuarios/:id/atividades"
-                                        routerLinkActive="active">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        routerLink="usuarios/:id/atividades" routerLinkActive="active">
                                         Cadastrar
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="usuarios-atividades/listar"
-                                        routerLinkActive="active">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        routerLink="usuarios-atividades/listar" routerLinkActive="active">
                                         Listar
                                     </button>
-                                    
+
                                 </div>
                             </div>
                         </div>

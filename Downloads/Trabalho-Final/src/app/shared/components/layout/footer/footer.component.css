@@ -1,0 +1,21 @@
+.footer-dark {
+  background-color: #1c1c1e;
+  color: #d1d1d1;
+  border-top: 1px solid #333;
+  font-size: 0.9rem;
+}
+
+.footer-dark a {
+  color: #9dc3ff;
+  text-decoration: none;
+}
+
+.footer-dark a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-dark .container {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
