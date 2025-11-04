@@ -38,7 +38,7 @@
     </ng-template>
 </div>
 
-<div class="modal fade" id="atividadesUsuarioModal" tabindex="-1" aria-labelledby="atividadesUsuarioModalLabel"
+<!-- <div class="modal fade" id="atividadesUsuarioModal" tabindex="-1" aria-labelledby="atividadesUsuarioModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -60,4 +60,27 @@
             </div>
         </div>
     </div>
+</div> --><div class="modal fade" id="atividadesUsuarioModal" tabindex="-1" aria-labelledby="atividadesUsuarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="atividadesUsuarioModalLabel">
+          Atividades vinculadas ao usuário: <span class="text-primary">{{ usuarioModalNome }}</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Lista de atividades:</strong></p>
+        <ul class="list-group">
+          <li *ngFor="let atividade of atividadesModal" class="list-group-item d-flex align-items-center">
+            <i class="bi bi-check-circle me-2 text-success"></i> {{ atividade.nome }}
+          </li>
+        </ul>
+        <p *ngIf="atividadesModal.length === 0" class="mt-3 text-muted">Nenhuma atividade vinculada.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>

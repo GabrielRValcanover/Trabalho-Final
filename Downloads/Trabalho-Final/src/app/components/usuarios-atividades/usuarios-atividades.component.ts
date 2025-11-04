@@ -94,7 +94,7 @@ export class UsuariosAtividadesComponent implements OnInit {
     this.usuarioID = Number(this.route.snapshot.paramMap.get('id'));
     if (this.usuarioID) {
       await this.usuariosService.getUsuariosById(this.usuarioID);
-      // this.usuario = await this.usuariosService.getUsuariosById(this.usuarioID);
+      this.usuario = await this.usuariosService.getUsuariosById(this.usuarioID);
 
     }
     this.atividadesService.getAllAtividades().then(async (atividades) => {
