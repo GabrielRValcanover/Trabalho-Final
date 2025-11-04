@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { db } from '../../../services/db.service';
+import { Modal } from 'bootstrap';
+import { Usuarios } from '../../../models/usuarios.model';
 
 @Component({
   selector: 'app-listar-atividades',
@@ -19,6 +21,9 @@ export class ListarAtividadesComponent implements OnInit {
   statusOptions = Object.values(Status);
   filtro = new FormControl('');
   categoriaFiltradas: Atividades[] = [];
+  usuariosModal: Usuarios[] = [];
+  atividadeModalNome: string = '';
+
 
 
 
@@ -53,27 +58,27 @@ export class ListarAtividadesComponent implements OnInit {
   editAtividades(id: number) {
     this.router.navigate(['/atividades/editar-atividades', id]);
   }
- deleteAtividade(id: number) {
-  Swal.fire({
-    title: 'Tem certeza?',
-    text: 'Esta ação não pode ser desfeita!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Sim, excluir!',
-    cancelButtonText: 'Cancelar'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.atividadesService.deleteAtividade(id).then(() => {
-        this.atividades = this.atividades.filter(atividades => atividades.id !== id);
-        this.categoriaFiltradas = this.categoriaFiltradas.filter(atividades => atividades.id !== id);
-        Swal.fire('Excluído!', 'A Atividade foi excluída com sucesso.', 'success');
-      }).catch(err => {
-        console.error('Erro ao excluir atividade:', err);
-        Swal.fire('Erro!', 'Não foi possível excluir a atividade.', 'error');
-      });
-    }
-  });
-}
+  deleteAtividade(id: number) {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Esta ação não pode ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.atividadesService.deleteAtividade(id).then(() => {
+          this.atividades = this.atividades.filter(atividades => atividades.id !== id);
+          this.categoriaFiltradas = this.categoriaFiltradas.filter(atividades => atividades.id !== id);
+          Swal.fire('Excluído!', 'A Atividade foi excluída com sucesso.', 'success');
+        }).catch(err => {
+          console.error('Erro ao excluir atividade:', err);
+          Swal.fire('Erro!', 'Não foi possível excluir a atividade.', 'error');
+        });
+      }
+    });
+  }
 
   atualizarStatus(atividade: Atividades) {
     const hoje = new Date();
@@ -102,9 +107,9 @@ export class ListarAtividadesComponent implements OnInit {
       const atividadesIDs = vinculos.map(vinculados => vinculados.atividadesID);
 
       db.atividades.where('id').anyOf(atividadesIDs).toArray().then(atividades => {
-         this.atividades = atividades;
-          console.log('Atividades do usuário:', this.atividades);
-        });
+        this.atividades = atividades;
+        console.log('Atividades do usuário:', this.atividades);
+      });
     });
   }
 
@@ -120,5 +125,28 @@ export class ListarAtividadesComponent implements OnInit {
     }
 
   }
+
+ async listarUsuariosPorAtividade(atividadeID: number, atividadeNome: string) {
+  try {
+    this.atividadeModalNome = atividadeNome;
+    const vinculos = await db.usuariosAtividade.where('atividadesID').equals(atividadeID).toArray();
+    const usuariosIDs = vinculos.map(v => v.usuarioID);
+    if (usuariosIDs.length === 0) {
+      this.usuariosModal = [];
+    } else {
+      this.usuariosModal = await db.usuarios.where('id').anyOf(usuariosIDs).toArray();
+    }
+
+    const modalEl = document.getElementById('usuariosAtividadeModal');
+    if (modalEl) {
+      const modal = new Modal(modalEl);
+      modal.show();
+    }
+  } catch (error) {
+    console.error('Erro ao listar usuários:', error);
+    alert('Ocorreu um erro ao buscar os usuários vinculados.');
+  }
+}
+
 
 }
