@@ -23,18 +23,14 @@ export class UsuariosAtividadesService {
   async deleteUsuarioAtividade(usuarioID: number, atividadesID: number): Promise<void> {
     return await this.dbService.usuariosAtividade.delete([usuarioID, atividadesID]);
   }
-  // async addMultiplosUsuariosAtividadesAssociacoes(associations: UsuariosAtividades[]): Promise<[number,
-  //   number][]> {
-  //   return await this.dbService.usuariosAtividade.bulkPut(associations) as unknown as
-  //     Promise<[number, number][]>;
-  // }
-async addMultiplosUsuariosAtividadesAssociacoes(
-  associations: UsuariosAtividades[]
-): Promise<number[]> {
-  const result = await this.dbService.usuariosAtividade.bulkPut(associations);
-  console.log('✅ Gravado no IndexedDB:', result, associations);
-  return result;
-}
+
+  async addMultiplosUsuariosAtividadesAssociacoes(
+    associations: UsuariosAtividades[]
+  ): Promise<number[]> {
+    const result = await this.dbService.usuariosAtividade.bulkPut(associations);
+    console.log('Gravado no IndexedDB:', result, associations);
+    return result;
+  }
 
 
 

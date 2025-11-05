@@ -29,15 +29,6 @@ export class ListarAtividadesComponent implements OnInit {
 
   constructor(private atividadesService: AtividadesService, private router: Router) { }
 
-  // ngOnInit() {
-  //   this.getAllAtividades();
-  //   this.listarUsuarios();
-  //     this.categoriaFiltradas = this.atividades;
-  //    this.filtro.valueChanges.subscribe((valor) => {
-  //     this.getFiltrarCategoria(valor || '');
-  //   });
-  // }
-
   ngOnInit() {
     this.listarUsuarios();
     this.getAllAtividades().then(() => {

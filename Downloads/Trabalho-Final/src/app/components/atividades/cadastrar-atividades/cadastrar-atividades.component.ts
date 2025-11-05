@@ -99,8 +99,4 @@ export class CadastrarAtividadesComponent implements OnInit {
   }
 
  
-
-
-
-
 }

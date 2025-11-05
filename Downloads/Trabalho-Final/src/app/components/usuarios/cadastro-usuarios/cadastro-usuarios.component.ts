@@ -14,8 +14,6 @@ import { Atividades } from '../../../models/atividades.model';
   styleUrl: './cadastro-usuarios.component.css'
 })
 
-
-
 export class CadastroUsuariosComponent implements OnInit {
   constructor(private usuariosService: UsuariosService, private router: Router, private route: ActivatedRoute) { }
 
