@@ -1,9 +1,11 @@
 
 <div class="container">
   <div class="col-md-6 offset-md-3">
-    <h1 class="text-center">
-      {{ atividadesID ? 'Editar Atividade' : 'Cadastrar Atividade' }}
-    </h1>
+    @if(atividadesID){
+      <h1 class="text-center">Editar Atividade</h1>
+      }@else{
+      <h1 class="text-center">Cadastrar Atividade</h1>
+      }
     <form [formGroup]="formAtividades" (ngSubmit)="addAtividades()" class="mb-5">
       <div class="mb-3">
         <label for="nome" class="form-label">Nome da Atividade:</label>
@@ -42,7 +44,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary" [disabled]="formAtividades.invalid">Cadastrar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="formAtividades.invalid">Salvar</button>
       <button type="reset" class="ms-2 btn btn-danger" (click)="formAtividades.reset()">Limpar</button>
     </form>
   </div>

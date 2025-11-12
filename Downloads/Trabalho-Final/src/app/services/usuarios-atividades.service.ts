@@ -28,7 +28,7 @@ export class UsuariosAtividadesService {
     associations: UsuariosAtividades[]
   ): Promise<number[]> {
     const result = await this.dbService.usuariosAtividade.bulkPut(associations);
-    console.log('Gravado no IndexedDB:', result, associations);
+    console.log('Gravado no EscolaDB:', result, associations);
     return result;
   }
 
