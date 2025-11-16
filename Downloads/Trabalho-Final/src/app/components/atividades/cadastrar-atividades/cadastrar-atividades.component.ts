@@ -50,7 +50,7 @@ export class CadastrarAtividadesComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Cadastro realizado!',
-            text: 'O Usuario foi cadastrado com sucesso.',
+            text: 'Atividade foi cadastrada com sucesso.',
             timer: 5000,
             showConfirmButton: true,
             draggable: true
